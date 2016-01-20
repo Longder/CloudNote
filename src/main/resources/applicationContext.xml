@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.2.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.2.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+    <util:properties id="dbProp" location="classpath:db.properties"/>
+    <!--数据库连接池-->
+    <bean id="dbcp" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="#{dbProp.driverName}"/>
+        <property name="url" value="#{dbProp.url}"/>
+        <property name="username" value="#{dbProp.username}"/>
+        <property name="password" value="#{dbProp.password}"/>
+    </bean>
+
+    <!--SqlSessionFactoryBean-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dbcp"/>
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
+    </bean>
+    <!--Mybatis Dao扫描组件-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.longder.note.dao"/>
+    </bean>
+
+    <!--组件扫描-->
+    <context:component-scan base-package="com.longder.note"/>
+    <mvc:annotation-driven/>
+    <!--spring事务管理（注解版）@Transactional-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dbcp"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="txManager"/>
+    <!--Aop-->
+    <aop:aspectj-autoproxy/>
+</beans>

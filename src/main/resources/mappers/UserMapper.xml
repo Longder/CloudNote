@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longder.note.dao.UserDao">
+    <!--根据用户名查询所有信息-->
+    <select id="findByName" parameterType="string" resultMap="userMap">
+        SELECT * FROM cn_user WHERE cn_user_name=#{name}
+    </select>
+    <!--插入用户-->
+    <insert id="save" parameterType="com.longder.note.entity.User">
+        INSERT INTO cn_user(cn_user_id,cn_user_name,cn_user_password,cn_user_token,cn_user_desc)
+        VALUES(#{id},#{username},#{password},#{token},#{description})
+    </insert>
+    <!--结果集映射表-->
+    <resultMap id="userMap" type="com.longder.note.entity.User">
+        <result property="id" column="cn_user_id"/>
+        <result property="username" column="cn_user_name"/>
+        <result property="password" column="cn_user_password"/>
+        <result property="token" column="cn_user_token"/>
+        <result property="description" column="cn_user_desc"/>
+    </resultMap>
+</mapper>

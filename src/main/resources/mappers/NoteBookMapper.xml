@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longder.note.dao.NoteBookDao">
+    <select id="findByUserId" parameterType="string" resultMap="notebookMap">
+        SELECT * FROM cn_notebook WHERE cn_user_id=#{userId}
+    </select>
+    <insert id="add" parameterType="com.longder.note.entity.NoteBook">
+        INSERT INTO cn_notebook(cn_notebook_id,cn_user_id,cn_notebook_type_id,cn_notebook_name,cn_notebook_desc,cn_notebook_createtime)
+        VALUES(#{id},#{userId},#{typeId},#{name},#{description},#{createTime})
+    </insert>
+    <resultMap id="notebookMap" type="com.longder.note.entity.NoteBook">
+        <result property="id" column="cn_notebook_id"/>
+        <result property="userId" column="cn_user_id"/>
+        <result property="typeId" column="cn_notebook_type_id"/>
+        <result property="name" column="cn_notebook_name"/>
+        <result property="description" column="cn_notebook_desc"/>
+        <result property="createTime" column="cn_notebook_createtime"/>
+    </resultMap>
+</mapper>

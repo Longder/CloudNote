@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longder.note.dao.ShareNoteDao">
+    <insert id="add" parameterType="com.longder.note.entity.ShareNote">
+        INSERT INTO cn_share(cn_share_id,cn_share_title,cn_share_body,cn_note_id)
+        VALUES(#{id},#{title},#{body},#{noteId})
+    </insert>
+    <select id="findByNoteId" parameterType="string" resultMap="shareMap">
+      SELECT * FROM cn_share WHERE cn_note_id = #{noteId}
+    </select>
+    <select id="findByTitle" parameterType="string" resultMap="shareMap">
+      SELECT * FROM cn_share WHERE cn_share_title LIKE CONCAT(CONCAT('%', #{title}), '%')
+    </select>
+    <select id="findById" parameterType="string" resultMap="shareMap">
+        SELECT * FROM cn_share WHERE cn_share_id=#{id}
+    </select>
+    <resultMap id="shareMap" type="com.longder.note.entity.ShareNote">
+        <result column="cn_share_id" property="id"/>
+        <result column="cn_share_title" property="title"/>
+        <result column="cn_share_body" property="body"/>
+        <result column="cn_note_id" property="noteId"/>
+    </resultMap>
+</mapper>
